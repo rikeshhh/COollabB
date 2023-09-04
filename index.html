@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>CollabBoard</title>
+    <!-- <link rel="stylesheet" type="text/css" href="./index.css"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+    <style>
+        /* Import Google font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #8AAAE5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+            padding: 10px;
+            max-width: 1050px;
+            text-align: center;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+        }
+
+        .options__button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--primary-color);
+            height: 50px;
+            border-radius: 5px;
+            color: var(--main-light);
+            font-size: 1.2rem;
+            width: 50px;
+            margin: 0 0.5rem;
+        }
+
+        h1 {
+            color: white;
+            font-style: italic;
+        }
+
+        i {
+            color: white;
+        }
+
+        .main {
+            display: flex;
+            gap: 8px;
+        }
+
+        .main .chatbot {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            flex: 0.3;
+            background-color: #242f41;
+            padding: 7px;
+
+        }
+
+        .main__chat_window {
+            flex-grow: 1;
+            overflow: scroll;
+        }
+
+        .main__chat_window::-webkit-scrollbar {
+            display: none;
+        }
+
+        .main__message_container {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main__message_container>input {
+            height: 50px;
+            flex: 1;
+            font-size: 1rem;
+            border-radius: 5px;
+            padding-left: 20px;
+            border: none;
+        }
+
+        .messages {
+            display: flex;
+            flex-direction: column;
+            margin: 1.5rem;
+            color: white;
+        }
+
+
+        #form>button {
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            gap:2px;
+        }
+
+        #messages>li {
+            padding: 0.5rem 1rem;
+            background-color: #1877F2;
+            border-radius: 11px;
+            color: white;
+            text-align: left;
+        }
+
+        #messages>li:nth-child(odd) {
+            background: #efefef;
+            color: #1877F2;
+        }
+
+
+        section {
+            background: #fff;
+            border-radius: 7px;
+        }
+
+        .tools-board {
+            width: 10px;
+            padding: 15px 22px 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tools-board .row {
+            margin-bottom: 20px;
+        }
+
+        .row .options {
+            display: flex;
+            list-style: none;
+            margin: 10px 0 0 5px;
+            gap: 4px;
+            border: 1px solid black;
+            padding: 4px;
+        }
+
+        .row .options .option {
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .option:is(:hover, .active) img {
+            filter: invert(17%) sepia(90%) saturate(3000%) hue-rotate(900deg) brightness(100%) contrast(100%);
+        }
+
+        .option :where(span, label) {
+            color: #5A6168;
+            cursor: pointer;
+            padding-left: 10px;
+        }
+
+        .option:is(:hover, .active) :where(span, label) {
+            color: #4A98F7;
+        }
+
+        .option #fill-color {
+            cursor: pointer;
+            height: 14px;
+            width: 14px;
+        }
+
+        #fill-color:checked~label {
+            color: #4A98F7;
+        }
+
+        .option #size-slider {
+            width: 100%;
+            height: 5px;
+            margin-top: 10px;
+        }
+
+        .colors .options {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .colors .option {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            margin-top: 3px;
+            position: relative;
+        }
+
+        .colors .option:nth-child(1) {
+            background-color: #fff;
+            border: 1px solid #bfbfbf;
+        }
+
+        .colors .option:nth-child(2) {
+            background-color: #000;
+        }
+
+        .colors .option:nth-child(3) {
+            background-color: #E02020;
+        }
+
+        .colors .option:nth-child(4) {
+            background-color: #6DD400;
+        }
+
+        .colors .option:nth-child(5) {
+            background-color: #4A98F7;
+        }
+
+        .colors .option.selected::before {
+            position: absolute;
+            content: "";
+            top: 50%;
+            left: 50%;
+            height: 12px;
+            width: 12px;
+            background: inherit;
+            border-radius: inherit;
+            border: 2px solid #fff;
+            transform: translate(-50%, -50%);
+        }
+
+        .colors .option:first-child.selected::before {
+            border-color: #ccc;
+        }
+
+        .option #color-picker {
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .buttons button {
+            width: 100%;
+            color: #fff;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            margin-bottom: 13px;
+            background: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .buttons .clear-canvas {
+            color: #6C757D;
+            border: 1px solid #6C757D;
+            transition: all 0.3s ease;
+        }
+
+        .clear-canvas:hover {
+            color: #fff;
+            background: #6C757D;
+        }
+
+        .buttons .save-img {
+            background: #4A98F7;
+            border: 1px solid #4A98F7;
+        }
+
+        .drawing-board {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .drawing-board canvas {
+            width: 100%;
+            height: 450px;
+        }
+
+        #form {
+            display: flex;
+        }
+
+        .chat_message {
+            height: 50px;
+            flex: 1;
+            font-size: 1rem;
+            border-radius: 5px;
+            padding-left: 20px;
+            border: none;
+        }
+
+        #form button {
+            background: #4A98F7;
+            border: 1px solid #4A98F7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Collab BOARD</h1>
+        <section class="header">
+            <p id="welcome" style="text-align: center; color: red;"></p>
+            <div class=" buttons">
+                <button class="clear-canvas">Clear Canvas</button>
+                <button class="save-img">Save As Image</button>
+            </div>
+        </section>
+        <div class="main">
+            <section class="chatbot">
+                <h1 style="color: white; text-align: center;">ChatBox</h1>
+                <div class="main__chat_window">
+                    <ul id="typingIndicator"></ul>
+                    <ul id="messages"></ul>
+                </div>
+                <form id="form" action="">
+                    <input id="input" class="chat_message" autocomplete="off" /><button>Send</button>
+                </form>
+            </section>
+            <section class="drawing-board">
+                <canvas></canvas>
+            </section>
+            <section></section>
+
+        </div>
+        <section class="tools-board">
+            <div class="row">
+                <label class="title">Shapes</label>
+                <ul class="options">
+                    <li class="option tool" id="rectangle">
+                        <img src="icons/rectangle.svg" alt="">
+                        <span>Rectangle</span>
+                    </li>
+                    <li class="option tool" id="circle">
+                        <img src="icons/circle.svg" alt="">
+                        <span>Circle</span>
+                    </li>
+                    <li class="option tool" id="triangle">
+                        <img src="icons/triangle.svg" alt="">
+                        <span>Triangle</span>
+                    </li>
+                    <li class="option">
+                        <input type="checkbox" id="fill-color">
+                        <label for="fill-color">Fill color</label>
+                    </li>
+                </ul>
+            </div>
+            <div>
+
+            </div>
+            <div class="row">
+                <label class="title">Options</label>
+                <ul class="options">
+                    <li class="option active tool" id="brush">
+                        <img src="icons/brush.svg" alt="">
+                        <span>Brush</span>
+                    </li>
+                    <li class="option tool" id="eraser">
+                        <img src="icons/eraser.svg" alt="">
+                        <span>Eraser</span>
+                    </li>
+                    <li class="option">
+                        <input type="range" id="size-slider" min="1" max="30" value="5">
+                    </li>
+                </ul>
+            </div>
+            <div class="row colors">
+                <label class="title">Colors</label>
+                <ul class="options">
+                    <li class="option"></li>
+                    <li class="option selected"></li>
+                    <li class="option"></li>
+                    <li class="option"></li>
+                    <li class="option">
+                        <input type="color" id="color-picker" value="#4A98F7">
+                    </li>
+                </ul>
+            </div>
+            <div style="display: flex; flex-direction:column;gap:10px;">
+                <button style="width: 190px; height: 30px;background-color: #4A98F7;color: white;"
+                    onclick="generateAndPrompt()">invite</button>
+                <button style="width: 190px; height: 30px;background-color: #4A98F7;color: white;">invite</button>
+
+            </div>
+        </section>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        var socket = io();
+        const typingIndicator = document.getElementById('typingIndicator');
+        let typing = false;
+
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+
+
+
+
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+        
+        socket.on('chat message', function (msg) {
+            var item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        socket.on('userDisconnected', (msg) => {
+            const userListItem = document.createElement('li');
+            userListItem.textContent = 'a user has disconnected';
+            messages.appendChild(userListItem);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        socket.on('userConnected', (msg) => {
+            const userList = document.createElement('li');
+            userList.textContent = msg;
+            messages.appendChild(userList);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        messageInput.addEventListener('input', () => {
+            if (!typing) {
+                typing = true;
+                socket.emit('userTyping', true);
+            }
+
+            setTimeout(() => {
+                typing = false;
+                socket.emit('userTyping', false);
+            }, 1000);
+        });
+
+        socket.on('userTyping', (isTyping) => {
+            if (isTyping) {
+                typingIndicator.textContent = 'A user is typing...';
+            } else {
+                typingIndicator.textContent = '';
+            }
+        });
+
+        
+    </script>
+    <script src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
+
+</body>
+
+</html>
